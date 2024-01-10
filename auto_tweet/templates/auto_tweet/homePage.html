@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="height:100vh;">
+    <div>
+        <h1>Tweet with python</h1>
+    </div>
+    <div class="d-flex">
+        
+        <div>
+            
+                <div>
+                    <form action="{% url "auto_tweet:tweet_api" %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <textarea class="form-control" required maxlength="280" id="text-area" style="height: 100px" name=tweet></textarea>
+                            <label for="floatingTextarea2">Tweet</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Image</label>
+                            <input class="form-control" type="file" id="fileupload" name="tweet_img">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+    </div>
+    <div id="preview">
+        <h1>Preview</h1>
+        <p id="text-preview" class="fs-5 text-wrap text-break" style="width: 512px;"></p>
+        <div id="dvPreview"></div>
+    </div>
+</div>
+{% endblock body %}
+{% block script %}
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#fileupload").change(function () {
+            if (typeof (FileReader) != "undefined") {
+                var dvPreview = $("#dvPreview");
+                dvPreview.html("");
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    if (regex.test(file[0].name.toLowerCase())) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var img = $("<img />");
+                            img.attr("style", "height:100%;width: 512px");
+                            img.attr("src", e.target.result);
+                            dvPreview.append(img);
+                        }
+                        reader.readAsDataURL(file[0]);
+                    } else {
+                        alert(file[0].name + " is not a valid image file.");
+                        dvPreview.html("");
+                        return false;
+                    }
+                });
+            } else {
+                alert("This browser does not support HTML5 FileReader.");
+            }
+        });
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#text-area").keyup(function () {
+            $("#text-preview").text($("#text-area").val()) ;
+            
+        });
+    });
+</script>
+{% endblock script %}
