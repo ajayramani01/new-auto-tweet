@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'auto_tweet',
+    'verifiedBySensiBull',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,5 @@ X_API_SECRET = config('X_API_SECRET')
 X_ACCESS_TOKEN = config('X_ACCESS_TOKEN')
 X_ACCESS_TOKEN_SECRET = config('X_ACCESS_TOKEN_SECRET')
 X_BEARER_TOKEN = config('X_BEARER_TOKEN')
+
+USE_TZ=False

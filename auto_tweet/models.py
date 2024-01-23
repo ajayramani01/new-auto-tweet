@@ -7,3 +7,7 @@ class tweet_history(models.Model):
 
     def __str__(self):
         return self.tweet[:50]
+    
+class xlsxFiles(models.Model):
+    xlsx = models.FileField(upload_to='xlsx')
+    date = models.DateField(auto_now=False, auto_now_add=True)

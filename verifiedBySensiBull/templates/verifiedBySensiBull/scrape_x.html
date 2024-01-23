@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="height:100vh;">
+    <div>
+        <h1>Scrape X data</h1>
+    </div>
+    <div class="d-flex">
+        
+        <div>
+            
+                <div>
+                    <form action="{% url "verifiedBySensiBull:scrape_X" %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <input class="btn btn-primary" type="submit" value="Scrape">
+                    </form>
+                    <h1 class="my-3">Export to XLSX</h1>
+                    <form action="{% url "verifiedBySensiBull:export_xlsx" %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <input class="btn btn-primary" type="submit" value="Export To XLSX">
+                    </form>
+                </div>
+            </div>
+    </div>
+
+</div>
+{% endblock body %}
+{% block script %}
+
+{% endblock script %}

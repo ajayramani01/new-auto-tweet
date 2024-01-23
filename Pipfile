@@ -8,6 +8,11 @@ django = "*"
 python-decouple = "*"
 pillow = "*"
 tweepy = "*"
+dataframe-image = "*"
+pandas = "*"
+xlrd = "*"
+selenium = "*"
+xlsxwriter = "*"
 
 [dev-packages]
 
