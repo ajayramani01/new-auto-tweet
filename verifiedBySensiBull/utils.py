@@ -7,11 +7,31 @@ from .models import verifiedUser
 import datetime
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+from core.settings import X_USER_ID,X_PASSWD
+def login_twitter(driver):
+    username_xpath='//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
+    next_button_xpath='//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]'
+    password_xpath='//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
+    login_xpath='//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div'
+    time.sleep(5)
+    driver.find_element(By.XPATH,username_xpath).send_keys(X_USER_ID)
+    time.sleep(2)
+    driver.find_element(By.XPATH,next_button_xpath).click()
+    time.sleep(2)
+    driver.find_element(By.XPATH,password_xpath).send_keys(X_PASSWD)
+    time.sleep(2)
+    driver.find_element(By.XPATH,login_xpath).click()
+
+    
 
 
 def opendriver():
     driver = webdriver.Chrome()
+    
     driver.get('https://twitter.com/search?q=%23verifiedbysensibull')
+    login_twitter(driver)
     time.sleep(20)
 
     scroll_pause_time = 2
@@ -76,7 +96,11 @@ def getUserData(url):
     except:
         total_capital=''
     date=str(date[0].text).split(' @ ')[1]
-    date=datetime.datetime.strptime(date,'%d %b %Y, %I:%M %p')
+    try:
+        date=datetime.datetime.strptime(date,'%d %b %Y, %I:%M %p')
+    except:
+        print("Fetching Failed")
+        print(date)
     try:
         verifiedUser.objects.create(
         verification_url=url,

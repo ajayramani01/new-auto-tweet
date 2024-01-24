@@ -43,6 +43,6 @@ def generateIMG(xlsx,tweet='Todays data:'):
     imgs_comb = Image.fromarray( imgs_comb)
     imgs_comb.save( 'media/tweet/'+str(obj.id)+'.png' )
 
-    # obj.tweet_img = 'tweet/'+str(obj.id)+'.png'
-    # obj.save()
-    # tweet_with_image(obj.tweet,obj.tweet_img.url)
+    obj.tweet_img = 'tweet/'+str(obj.id)+'.png'
+    obj.save()
+    tweet_with_image(obj.tweet,obj.tweet_img.url)
