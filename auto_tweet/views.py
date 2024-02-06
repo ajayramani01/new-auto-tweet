@@ -3,11 +3,12 @@ from django.views.generic import TemplateView
 from .models import tweet_history,xlsxFiles
 from .tweet_script import *
 from datetime import datetime
-from .utils import generateIMG
+import json
+from .utils import return_json_of_xlsx,generateImageXlsx
 # Create your views here.
 class homePage(TemplateView):
     template_name = "auto_tweet/homePage.html"
-    extra_content={}
+    extra_context={}
     def get(self, *args, **kwargs):
 
         return super().get(*args, **kwargs)
@@ -17,7 +18,7 @@ class homePage(TemplateView):
       
 class tweet_api(TemplateView):
     template_name = "auto_tweet/done.html"
-    extra_content={}
+    extra_context={}
     def get(self, *args, **kwargs):
         return redirect("")
 
@@ -36,7 +37,7 @@ class tweet_api(TemplateView):
     
 class tweet_with_xlsx(TemplateView):
     template_name = "auto_tweet/done.html"
-    extra_content = {}
+    extra_context = {}
     
     def get(self, *args, **kwargs):
         return redirect("")
@@ -45,7 +46,31 @@ class tweet_with_xlsx(TemplateView):
         tweet=request.POST['tweet']
         xlsxFile = request.FILES['xlsxFile']
         todaysXlsx = xlsxFiles.objects.create(xlsx=xlsxFile)
+        generateImageXlsx(tweet)
 
-        generateIMG(todaysXlsx,tweet)
+        
+        return redirect('/xlsx-data/')
+        # return super().get(request,*args, **kwargs)
+    
+class tweet_with_xlsx_data(TemplateView):
+    template_name = "auto_tweet/xlsx-data.html"
+    extra_context = {}
+    
+    def get(self, *args, **kwargs):
+        todaysXlsx=xlsxFiles.objects.last()
+        jsons_list=return_json_of_xlsx(todaysXlsx)
+        bank_nifty = [] 
+        bank_nifty = json.loads(jsons_list[0]) 
+        nifty = [] 
+        nifty = json.loads(jsons_list[1]) 
+        fin_nifty = [] 
+        fin_nifty = json.loads(jsons_list[2]) 
+        self.extra_context["bank_nifty"]=bank_nifty
+        self.extra_context["nifty"]=nifty
+        self.extra_context["fin_nifty"]=fin_nifty
 
+        return super().get(*args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        
         return super().get(request,*args, **kwargs)

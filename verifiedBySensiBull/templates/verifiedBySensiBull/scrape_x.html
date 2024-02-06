@@ -23,6 +23,12 @@
                         
                         <input class="btn btn-primary" type="submit" value="Export To XLSX">
                     </form>
+                    {% comment %} <h1 class="my-3">generate winner loser</h1>
+                    <form action="{% url "verifiedBySensiBull:generate_winner" %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <input class="btn btn-primary" type="submit" value="Generate">
+                    </form> {% endcomment %}
                 </div>
             </div>
     </div>

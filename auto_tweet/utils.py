@@ -1,13 +1,12 @@
 from .models import tweet_history,xlsxFiles
 import pandas as pd
 import numpy as np
-import dataframe_image as dfi
 from .tweet_script import tweet_with_image
-from PIL import Image
+import subprocess
+import time
+def return_json_of_xlsx(xlsx):
 
-def generateIMG(xlsx,tweet='Todays data:'):
 
-    obj = tweet_history.objects.create(tweet=tweet)
     FILE_PATH=xlsx.xlsx.url
     SHEET_INDEX = 0
     records = pd.read_excel(FILE_PATH[1:],index_col=False)
@@ -22,27 +21,33 @@ def generateIMG(xlsx,tweet='Todays data:'):
     records.index=blankIndex
     # print(records)
     # dfi.export(records, 'media/tweet/'+str(obj.id)+'.png')
-
+    records.rename(columns={'BANK NIFTY':'BANK_NIFTY','Sell Below':'Sell_Below','Buy Above':'Buy_Above'},inplace=True)
     record1=records.iloc[0:4]
-    print(record1)
+
     record2=records.iloc[5:9]
-    record2.rename(columns={'BANK NIFTY':'NIFTY'},inplace=True)
-    print(record2)
+    record2.rename(columns={'BANK_NIFTY':'NIFTY'},inplace=True)
+
     record3=records.iloc[10:]
-    record3.rename(columns={'BANK NIFTY':'FINNIFTY'},inplace=True)
-    print(record3)
+    record3.rename(columns={'BANK_NIFTY':'FINNIFTY'},inplace=True)
 
-    dfi.export(record1, 'temp/1.png')
-    dfi.export(record2, 'temp/2.png')
-    dfi.export(record3, 'temp/3.png')
-    list_im = ['temp/1.png', 'temp/2.png', 'temp/3.png']
-    imgs    = [ Image.open(i) for i in list_im ]
-    min_shape = sorted( [(np.sum(i.size), i.size ) for i in imgs])[0][1]
 
-    imgs_comb = np.vstack([i.resize(min_shape) for i in imgs])
-    imgs_comb = Image.fromarray( imgs_comb)
-    imgs_comb.save( 'media/tweet/'+str(obj.id)+'.png' )
+    json1=record1.reset_index().to_json(orient ='records') 
+    json2=record2.reset_index().to_json(orient ='records') 
+    json3=record3.reset_index().to_json(orient ='records') 
+    
+    return [json1,json2,json3]
+
+  
+
+
+def generateImageXlsx(tweet=['Todays data:']):
+    obj = tweet_history.objects.create(tweet=tweet)
+    img_output='media/tweet/'+str(obj.id)+'.png'
+    img_input='http://127.0.0.1:8000/xlsx-data/'
+
+    subprocess.run(["wkhtmltoimage", "--width", "1200", "--height", "1200", img_input, img_output])
+    time.sleep(2)
 
     obj.tweet_img = 'tweet/'+str(obj.id)+'.png'
     obj.save()
-    tweet_with_image(obj.tweet,obj.tweet_img.url)
+    # tweet_with_image(obj.tweet,obj.tweet_img.url)

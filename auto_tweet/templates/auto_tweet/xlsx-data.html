@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block css %}
+<style>
+    html{
+        font-size:22px;
+    }
+</style>
+{% endblock css %}
+{% block body %}
+<div class="container my-5">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Buy Above</th>
+      <th scope="col">Sell Below</th>
+    </tr>
+  </thead>
+    <thead>
+        <tr>
+          <th scope="col" colspan="3"><h2>BANK NIFTY</h2></th>
+        </tr>
+      </thead>
+    
+    <tbody>
+        {% for data in bank_nifty %}
+            <tr>
+                <td>{{data.BANK_NIFTY}}</td>
+                <td>{{data.Buy_Above}}</td>
+                <td>{{data.Sell_Below}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <thead>
+        <tr>
+          <th scope="col" colspan="3"><h2>NIFTY</h2></th>
+        </tr>
+      </thead>
+    <tbody>
+        {% for data in nifty %}
+            <tr>
+                <td>{{data.NIFTY}}</td>
+                <td>{{data.Buy_Above}}</td>
+                <td>{{data.Sell_Below}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <thead>
+        <tr>
+          <th scope="col" colspan="3"><h2>FIN NIFTY</h2></th>
+        </tr>
+      </thead>
+    <tbody>
+        {% for data in fin_nifty %}
+            <tr>
+                <td>{{data.FINNIFTY}}</td>
+                <td>{{data.Buy_Above}}</td>
+                <td>{{data.Sell_Below}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock body %}
+{% block script %}{% endblock script %}

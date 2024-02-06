@@ -10,8 +10,13 @@ class verifiedUsersSensiBull(admin.ModelAdmin):
         "ROI",
         "total_capital",
         "date",
-        "verification__url"
+        "verification_url"
     )
+    search_fields =[
+        "verification_url",
+        "name",
+        "x_username"
+    ]
     ordering = ('-date',)
     def verification__url(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.verification_url)
