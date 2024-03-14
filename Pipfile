@@ -13,6 +13,8 @@ pandas = "*"
 xlrd = "*"
 selenium = "*"
 xlsxwriter = "*"
+django-crontab = "*"
+pyotp = "*"
 
 [dev-packages]
 

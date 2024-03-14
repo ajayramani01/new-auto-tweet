@@ -42,8 +42,9 @@ class generate(TemplateView):
     extra_context={}
     def get(self, *args, **kwargs):
         # date=datetime(2024,2,5).date()
-        date=datetime.today().date()
-
+        # date=datetime.today().date()
+        date=(datetime.strptime(self.kwargs['date'],'%Y-%m-%d')).date()
+        
         WinnerLoser=generateWinnerLoser(date)
         list_of_winlose=[]
         for i in WinnerLoser:

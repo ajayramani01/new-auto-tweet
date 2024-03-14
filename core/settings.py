@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,11 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -137,5 +138,50 @@ X_ACCESS_TOKEN_SECRET = config('X_ACCESS_TOKEN_SECRET')
 X_BEARER_TOKEN = config('X_BEARER_TOKEN')
 X_USER_ID = config('X_USER_ID')
 X_PASSWD = config('X_PASSWD')
+X2FA = config('X2FA')
+CREDS = config('CREDS')
 
-USE_TZ=False
+
+#logging
+APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
+ERROR_LOG_FILENAME = os.path.join(BASE_DIR, 'log/error.log')
+import logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console':{
+            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        },
+        'file':{
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file' : {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': APP_LOG_FILENAME
+            
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['console','file'],
+            'propagate':True
+            
+        }
+    },
+}
+
+#CronSetup
+
+CRONJOBS=[
+    ('0 19 * * *','verifiedBySensiBull.cron.tweetJob')
+]
