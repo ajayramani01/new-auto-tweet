@@ -15,6 +15,7 @@ selenium = "*"
 xlsxwriter = "*"
 django-crontab = "*"
 pyotp = "*"
+progress = "*"
 
 [dev-packages]
 

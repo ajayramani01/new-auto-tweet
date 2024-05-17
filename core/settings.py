@@ -139,6 +139,12 @@ X_BEARER_TOKEN = config('X_BEARER_TOKEN')
 X_USER_ID = config('X_USER_ID')
 X_PASSWD = config('X_PASSWD')
 X2FA = config('X2FA')
+X_USER_ID1 = config('X_USER_ID1')
+X_PASSWD1 = config('X_PASSWD1')
+X2FA1 = config('X2FA1')
+X_USER_ID2 = config('X_USER_ID2')
+X_PASSWD2 = config('X_PASSWD2')
+X2FA2 = config('X2FA2')
 CREDS = config('CREDS')
 
 
