@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block css %}
+<style>
+    html {
+        font-size: 20px;
+    }
+    body {
+        background: url({% static "bg2.jpg" %}) no-repeat center center/cover;
+        background-size: 100vw 100vw;
+    }
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center text-white m-0" style="font-size:4rem">STOCK MARKET</h1>
+    <hr class="border border-3 border-info m-1">
+    <h1 class="text-center text-white">Option Traders League</h1>
+
+    <div class="btn-group">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="action" value="scrape" class="btn btn-primary">Scrape</button>
+            <button type="submit" name="action" value="show" class="btn btn-success">Show</button>
+            <button type="submit" name="action" value="download" class="btn btn-danger">Download</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}
+
+{% block script %}
+{% endblock script %}

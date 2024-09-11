@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Show Data{% endblock title %}
+{% block css %}
+<style>
+    html {
+        font-size: 20px;
+    }
+    body {
+        background: url({% static "bg2.jpg" %}) no-repeat center center/cover;
+        background-size: 100vw 100vw;
+    }
+
+    td, th {
+        border-width: 2px;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center text-white m-0" style="font-size:4rem">STOCK MARKET</h1>
+    <hr class="border border-3 border-info m-1">
+    <h1 class="text-center text-white">Option Traders League</h1>
+    <h3 class="text-white">Date: {{ date }}</h3>
+
+    <div class="d-flex">
+        <div class="winners w-75 my-4">
+            <table class="text-white w-100 fs-4 border border-5" style="border-color:#32CD30 !important">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="5">
+                            <h2 class="m-0 pb-2 fw-bold" style="background-color:#32CD30;">Traders Closed Positively</h2>
+                        </th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Twitter Handle</th>
+                        <th scope="col">Total P&L</th>
+                        <th scope="col">ROI</th>
+                        <th scope="col">Total CAP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for winner in Winner %}
+                        <tr>
+                            <td>{{ winner.name }}</td>
+                            <td>{{ winner.x_username }}</td>
+                            <td>{{ winner.totalPL }}</td>
+                            <td>{{ winner.ROI }}</td>
+                            <td>{{ winner.total_capital }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row-reverse">
+        <div class="losers my-4 w-75">
+            <table class="w-100 text-white fs-4 border border-4 border-danger">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="5">
+                            <h2 class="bg-danger m-0 pb-2 fw-bold">Traders Closed Negatively</h2>
+                        </th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Twitter Handle</th>
+                        <th scope="col">Total P&L</th>
+                        <th scope="col">ROI</th>
+                        <th scope="col">Total CAP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loser in Loser %}
+                        <tr>
+                            <td>{{ loser.name }}</td>
+                            <td>{{ loser.x_username }}</td>
+                            <td>{{ loser.totalPL }}</td>
+                            <td>{{ loser.ROI }}</td>
+                            <td>{{ loser.total_capital }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block script %}{% endblock script %}

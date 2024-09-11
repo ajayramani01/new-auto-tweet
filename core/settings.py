@@ -149,6 +149,9 @@ CREDS = config('CREDS')
 
 
 #logging
+LOG_DIR = os.path.join(BASE_DIR, 'log')
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
 APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
 ERROR_LOG_FILENAME = os.path.join(BASE_DIR, 'log/error.log')
 import logging
