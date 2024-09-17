@@ -391,6 +391,7 @@ def web_scrap(pl='pl_desc',flag=False):
         x_user_photo = "https://twitter.com/"+ name_username[1] + "/photo" 
         save_image_from_url(x_user_photo,name_username[1])
         verification_url = verification_urls[i-1]
+        history_url = verification_url.split('/live-positions')[0]
         totalPL = td_tags[2].get_text(strip=True)
         ROI = td_tags[4].get_text(strip=True)
         total_capital = td_tags[3].get_text(strip=True)
@@ -403,7 +404,7 @@ def web_scrap(pl='pl_desc',flag=False):
             'verification_url': verification_url,
             'totalPL': totalPL,
             'ROI': ROI,
-            'total_capital': total_capital
+            'total_capital': total_capital,
         })
         # print(name," ",x_username)
         # print("P&L ",totalPL)
@@ -481,3 +482,52 @@ def save_image_from_url(url,username) -> None:
         print(f'Image saved as {img_path}')
     finally:
         driver.quit()
+
+def history(url='https://web.sensibull.com/verified-pnl/candied-soursop/'):
+    driver = webdriver.Chrome(options=options)
+    driver.set_window_size(3000,2000)
+    driver.get(url)
+    time.sleep(5)
+    button = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[3]/div[2]/div/div/div/div[2]/main/div/div[1]/div[2]/button')
+    button.click()
+    data = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[3]/div[2]/div/div/div/div[3]').text
+    lines = data.split('\n')
+    cleaned_lines = [line.strip() for line in lines]
+    i = 1
+    result = []
+    while i < len(cleaned_lines):
+        if cleaned_lines[i] in ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"]:
+            result.append([cleaned_lines[i]])
+            i += 1
+        else:
+            result[-1].append([cleaned_lines[i],cleaned_lines[i+1],cleaned_lines[i+2],cleaned_lines[i+3]])
+            i += 4
+    print(result)
+    new_result = process_data(result)
+    print(new_result)
+    driver.quit()
+    return new_result
+    # for month in result:
+    #     for ele in month:
+    #         print(ele)
+
+def process_data(data):
+    result = []
+    
+    def parse_pl_value(pl_string):
+        if 'L' in pl_string:
+            return float(pl_string.replace('L', '').replace(',', '')) * 100000
+        return float(pl_string.replace(',', ''))
+    
+    for entry in data:
+        month = entry[0]
+        total_value = 0
+        for record in entry[1:]:
+            total_value += parse_pl_value(record[3])
+        result.append({
+            'month': month,
+            'total_value': int(total_value),
+            'record_count': len(entry) - 1
+        })
+    
+    return result

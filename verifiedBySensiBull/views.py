@@ -127,18 +127,33 @@ class ShowDataView(TemplateView):
 
         return super().get(request, *args, **kwargs)
 
+from datetime import datetime
 def leaderboard_profit(request):
     traders = web_scrap('pl_desc')
     try:
-        date = datetime.today().date()
+        date = datetime.today().strftime("%a %b %d %Y")
     except:
-        date = datetime.datetime.today().date()
+        date = datetime.datetime.strftime("%a %b %d %Y")
     return render(request, 'verifiedBySensiBull/leaderboard.html', {'traders': traders,'date':date})
 
 def leaderboard_loss(request):
     traders = web_scrap('pl_asc')
     try:
-        date = datetime.today().date()
+        date = datetime.today().strftime("%a %b %d %Y")
     except:
-        date = datetime.datetime.today().date()
+        date = datetime.datetime.today().strftime("%a %b %d %Y")
     return render(request, 'verifiedBySensiBull/leaderboard.html', {'traders': traders,'date':date})
+
+def Individual_trader_performance(request,twitter_username, sensibull_username):
+    traders = [{
+        'month':'MONTH',
+        'total_value': 'NET',
+        'record_count':'DAYS'
+    }]
+    sensibull_url = 'https://web.sensibull.com/verified-pnl/' + sensibull_username
+    traders += history(sensibull_url)
+    try:
+        date = datetime.today().strftime("%a %b %d %Y")
+    except:
+        date = datetime.datetime.strftime("%a %b %d %Y")
+    return render(request, 'verifiedBySensiBull/performance.html', {'traders': traders,'username':twitter_username})

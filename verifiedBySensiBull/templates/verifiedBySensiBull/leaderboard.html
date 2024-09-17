@@ -4,62 +4,67 @@
 {% block css %}
 <style>
     body {
-        background: url({% static "bg2.jpg" %}) no-repeat center center/cover;
-        background-size: 100vw 100vw;
+        background: url({% static "bg4.jpg" %}) no-repeat center center/cover;
+        background-size: 100vw 65vw;
         font-family: Arial, sans-serif;
         background-color: #1e1e1e;
         color: #f4f4f4;
         text-align: center;
+        background-blend-mode: overlay;
     }
-    table {
-        margin: auto;
-        width: 80%;
-        border-collapse: collapse;
+    h1 {
+        font-size: 2.5em;
+        color: #f39c12;
+        margin-bottom: 10px;
     }
-    th, td {
-        padding: 12px;
-        border: 1px solid #444;
+    h2 {
+        font-size: 1.5em;
+        color: #fff;
+        margin-bottom: 20px;
     }
-    th {
-        background-color: #ff9800;
+    .trader {
+        margin-bottom: 2px;
+        font-size: 1.5em;
+        display: flex;
+        justify-content: center;
+    }
+    .userPhoto{
+        border-radius: 50%;
+        margin-right: 4rem;
+        width: 20px;
+    }
+    .userName{
+        width:100px;
+        margin-right: 7rem;
+        margin-top: 0.5rem;
+    }
+    .userPL{
+        width:50px;
+        margin-left: 4rem;
+        margin-top: 0.5rem;
     }
 </style>
 {% endblock css %}
+
 {% block body %}
-<head>
-    <h1 class="text-center text-white m-0" style="font-size:4rem">STOCK MARKET</h1>
-    <hr class="border border-3 border-info m-1">
-    <h1 class="text-center text-white">Option Traders League</h1>
-  <h3 class="text-white">Date : {{date}}</h3>
-</head>
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Total P&L</th>
-                <th>ROI</th>
-                <th>Capital</th>
-                <!-- <th>Verification</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for trader in traders %}
-            <tr>
-                <td><img src="{% static 'images/' %}{{ trader.saved_image }}.jpg" alt="User Photo" width="50"></td>
-                <td>{{ trader.name }}</td>
-                <td>{{ trader.x_username }}</td>
-                <td>{{ trader.totalPL }}</td>
-                <td>{{ trader.ROI }}</td>
-                <td>{{ trader.total_capital }}</td>
-                <!-- <td><a href="{{ trader.verification_url }}" target="_blank">Verify</a></td> -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+<h1>OPTION TRADER LEAGUE</h1>
+<h2>Top 10 for {{ date }}</h2>
+
+<div class="trader-list">
+    {% for trader in traders %}
+        <div class="trader">
+            <div class="userPhoto">
+                <img src="{% static 'images/' %}{{ trader.saved_image }}.jpg" alt="User Photo" width="50" > 
+            </div>
+            <div class="userName">
+                <span >{{ trader.x_username }}</span>
+            </div>
+            <div class="userPL">
+                <span >{{ trader.totalPL }}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock body %}
+
 {% block script %}{% endblock script %}

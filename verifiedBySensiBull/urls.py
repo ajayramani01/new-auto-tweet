@@ -10,4 +10,5 @@ urlpatterns = [
     path('show-data/<str:date>/', ShowDataView.as_view(), name='show_data'),
     path('leaderboard-profit/', leaderboard_profit, name='leaderboard_profit'),
     path('leaderboard-loss/', leaderboard_loss, name='leaderboard_loss'),
+    path('performance/<str:twitter_username>/<str:sensibull_username>/', Individual_trader_performance, name='performance'),
 ]
